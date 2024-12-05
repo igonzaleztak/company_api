@@ -1,0 +1,39 @@
+networks:
+  test:
+    name: xm_test
+
+services:
+  xm_db:
+    image: postgres:17.0
+    container_name: xm_db
+    shm_size: 128mb
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./_db_schema/postgres/schema.sql:/docker-entrypoint-initdb.d/db.sql
+    environment:
+      POSTGRES_PASSWORD: xm
+      POSTGRES_USER: xm
+      POSTGRES_DB: xm
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U xm -d xm"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - test
+
+  xm_app:
+    container_name: xm_app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+      - "3001:3001"
+    env_file: ".env.docker"
+    networks:
+      - test
+    depends_on:
+      xm_db:
+        condition: service_healthy
