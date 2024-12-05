@@ -1,0 +1,175 @@
+{
+	"info": {
+		"_postman_id": "07df3a65-c027-47ae-9615-9f0add97079c",
+		"name": "xm api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "36746339"
+	},
+	"item": [
+		{
+			"name": "health",
+			"item": [
+				{
+					"name": "Health check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{health_url}}/health"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "Register user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test@test.es\",\n    \"password\": \"test\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{url}}/register"
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let body = pm.response.json()",
+									"pm.environment.set(\"access_token\", body.access_token)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test@test.es\",\n    \"password\": \"test\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{url}}/login"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "company",
+			"item": [
+				{
+					"name": "Create company",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let body = pm.response.json()",
+									"pm.environment.set(\"companyID\", body.id)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{access_token}}"
+							}
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"test67\",\n    \"description\": \"this is a rando2m description\",\n    \"amount_employees\": 1,\n    \"registered\": true,\n    \"type\": \"NonProfit\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{url}}/company/create"
+					},
+					"response": []
+				},
+				{
+					"name": "Get company",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/company/{{companyID}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Update company",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{access_token}}"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"test5\",\n    \"description\": \"this is a rando2m description\",\n    \"amount_employees\": 23,\n    \"registered\": true,\n    \"type\": \"Cooperative\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{url}}/company/{{companyID}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete company",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{access_token}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "{{url}}/company/{{companyID}}"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

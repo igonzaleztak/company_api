@@ -414,6 +414,8 @@ In the folder tests, you can find an integration test of the API. This has been 
 
 The next sections describe the available endpoints in the API. When an endpoint is marked as **protected**, it means that the user must be authenticated to operate with it.
 
+You can find a postman collection with all the requests in the folder [postman](postman).
+
 ### Health
 
 - `GET /health`: Healthcheck. **This endpoint is listening on the healtcheck port!!**
